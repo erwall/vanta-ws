@@ -6,4 +6,5 @@ edition = "2021"
 [dependencies]
 serde = { version = "1.0.201", features = ["derive"] }
 serde_json = "1.0.117"
+thiserror = "1.0.60"
 tungstenite = "0.21.0"
