@@ -3,16 +3,16 @@
 use std::fmt::Display;
 
 #[derive(thiserror::Error, Debug)]
-pub enum VantaError {
+pub enum Error {
     SerializeError(#[from] serde_json::Error),
     WebSocketError(#[from] tungstenite::Error),
 }
 
-impl Display for VantaError {
+impl Display for Error {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            VantaError::SerializeError(e) => write!(f, "{e}"),
-            VantaError::WebSocketError(e) => write!(f, "{e}"),
+            Error::SerializeError(e) => write!(f, "{e}"),
+            Error::WebSocketError(e) => write!(f, "{e}"),
         }
     }
 }
