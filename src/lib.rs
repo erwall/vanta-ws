@@ -5,5 +5,5 @@ pub mod error;
 pub mod message;
 pub mod vanta;
 
-pub use error::Error;
+pub use error::{Error, Result};
 pub use vanta::*;
