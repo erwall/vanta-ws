@@ -6,4 +6,5 @@ pub mod message;
 pub mod vanta;
 
 pub use error::{Error, Result};
+pub use tungstenite;
 pub use vanta::*;
