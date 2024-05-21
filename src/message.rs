@@ -30,7 +30,6 @@ impl From<&String> for VantaState {
     }
 }
 
-
 fn construct_binary_message(
     command_id: u32,
     id: u32,
@@ -59,28 +58,43 @@ fn construct_text_message(
     Ok(Message::Text(message))
 }
 
-
-pub fn login(id: u32, user_id: String, password: String) -> serde_json::Result<Message> {
+pub fn login(id: u32, user_id: String, password: String) -> crate::Result<Message> {
     let params = VantaCommandParameters::Login(VantaParametersLogin { user_id, password });
-    construct_binary_message(301, id, params)
+    Ok(construct_binary_message(301, id, params)?)
 }
 
-pub fn logout(id: u32) -> serde_json::Result<Message> {
-    construct_text_message(319, id, VantaCommandParameters::None)
+pub fn logout(id: u32) -> crate::Result<Message> {
+    Ok(construct_text_message(
+        319,
+        id,
+        VantaCommandParameters::None,
+    )?)
 }
 
-pub fn clear_faults(id: u32) -> serde_json::Result<Message> {
-    construct_text_message(254, id, VantaCommandParameters::None)
+pub fn clear_faults(id: u32) -> crate::Result<Message> {
+    Ok(construct_text_message(
+        254,
+        id,
+        VantaCommandParameters::None,
+    )?)
 }
 
-pub fn start_test(id: u32) -> serde_json::Result<Message> {
-    construct_text_message(601, id, VantaCommandParameters::None)
+pub fn start_test(id: u32) -> crate::Result<Message> {
+    Ok(construct_text_message(
+        601,
+        id,
+        VantaCommandParameters::None,
+    )?)
 }
 
-pub fn pet_watchdog(id: u32) -> serde_json::Result<Message> {
-    construct_text_message(244, id, VantaCommandParameters::None)
+pub fn pet_watchdog(id: u32) -> crate::Result<Message> {
+    Ok(construct_text_message(
+        244,
+        id,
+        VantaCommandParameters::None,
+    )?)
 }
 
-pub fn on_connect_response() -> Message {
-    Message::Text(String::from(ON_CONNECT_RESPONSE))
+pub fn on_connect_response() -> crate::Result<Message> {
+    Ok(Message::Text(String::from(ON_CONNECT_RESPONSE)))
 }
