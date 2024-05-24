@@ -30,6 +30,15 @@ impl From<&String> for VantaState {
     }
 }
 
+impl From<&Message> for VantaState {
+    fn from(value: &Message) -> Self {
+        match value {
+            Message::Text(s) => VantaState::from(s),
+            _ => VantaState::Unknown,
+        }
+    }
+}
+
 fn construct_binary_message(
     command_id: u32,
     id: u32,
