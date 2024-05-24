@@ -6,6 +6,7 @@ const CONNECTION_REJECTED_DEVICE_CONTROLLED: &str = "Rejecting connection. Devic
 const CONNECTION_REJECTED_USER_LOGGED_IN: &str = "Rejecting connection. User is Logged In";
 const ON_CONNECT_RESPONSE: &str = "Hi i am a controller";
 
+#[derive(Debug, PartialEq)]
 pub enum VantaState {
     Disconnected,
     Disconnecting,
