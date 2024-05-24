@@ -1,4 +1,4 @@
-use crate::command::*;
+use crate::command::{self, Command};
 use tungstenite::Message;
 
 const CONNECTION_ESTABLISHED: &str = "Server ready to receive commands";
@@ -43,9 +43,9 @@ impl From<&Message> for VantaState {
 fn construct_binary_message(
     command_id: u32,
     id: u32,
-    params: VantaCommandParameters,
+    params: command::Parameters,
 ) -> serde_json::Result<Message> {
-    let command = VantaCommand {
+    let command = Command {
         command_id,
         id,
         params,
@@ -55,7 +55,7 @@ fn construct_binary_message(
 }
 
 pub fn login(id: u32, user_id: String, password: String) -> crate::Result<Message> {
-    let params = VantaCommandParameters::Login(VantaParametersLogin { user_id, password });
+    let params = command::Parameters::Login(command::LoginParameters { user_id, password });
     Ok(construct_binary_message(301, id, params)?)
 }
 
@@ -63,7 +63,7 @@ pub fn logout(id: u32) -> crate::Result<Message> {
     Ok(construct_binary_message(
         319,
         id,
-        VantaCommandParameters::None,
+        command::Parameters::None,
     )?)
 }
 
@@ -71,7 +71,7 @@ pub fn clear_faults(id: u32) -> crate::Result<Message> {
     Ok(construct_binary_message(
         254,
         id,
-        VantaCommandParameters::None,
+        command::Parameters::None,
     )?)
 }
 
@@ -79,7 +79,7 @@ pub fn start_test(id: u32) -> crate::Result<Message> {
     Ok(construct_binary_message(
         601,
         id,
-        VantaCommandParameters::None,
+        command::Parameters::None,
     )?)
 }
 
@@ -87,7 +87,7 @@ pub fn pet_watchdog(id: u32) -> crate::Result<Message> {
     Ok(construct_binary_message(
         244,
         id,
-        VantaCommandParameters::None,
+        command::Parameters::None,
     )?)
 }
 
