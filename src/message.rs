@@ -54,27 +54,13 @@ fn construct_binary_message(
     Ok(Message::Binary(message))
 }
 
-fn construct_text_message(
-    command_id: u32,
-    id: u32,
-    params: VantaCommandParameters,
-) -> serde_json::Result<Message> {
-    let command = VantaCommand {
-        command_id,
-        id,
-        params,
-    };
-    let message = serde_json::to_string(&command)?;
-    Ok(Message::Text(message))
-}
-
 pub fn login(id: u32, user_id: String, password: String) -> crate::Result<Message> {
     let params = VantaCommandParameters::Login(VantaParametersLogin { user_id, password });
     Ok(construct_binary_message(301, id, params)?)
 }
 
 pub fn logout(id: u32) -> crate::Result<Message> {
-    Ok(construct_text_message(
+    Ok(construct_binary_message(
         319,
         id,
         VantaCommandParameters::None,
@@ -82,7 +68,7 @@ pub fn logout(id: u32) -> crate::Result<Message> {
 }
 
 pub fn clear_faults(id: u32) -> crate::Result<Message> {
-    Ok(construct_text_message(
+    Ok(construct_binary_message(
         254,
         id,
         VantaCommandParameters::None,
@@ -90,7 +76,7 @@ pub fn clear_faults(id: u32) -> crate::Result<Message> {
 }
 
 pub fn start_test(id: u32) -> crate::Result<Message> {
-    Ok(construct_text_message(
+    Ok(construct_binary_message(
         601,
         id,
         VantaCommandParameters::None,
@@ -98,7 +84,7 @@ pub fn start_test(id: u32) -> crate::Result<Message> {
 }
 
 pub fn pet_watchdog(id: u32) -> crate::Result<Message> {
-    Ok(construct_text_message(
+    Ok(construct_binary_message(
         244,
         id,
         VantaCommandParameters::None,
