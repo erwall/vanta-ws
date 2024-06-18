@@ -43,7 +43,7 @@ impl From<&Message> for VantaState {
 fn construct_binary_message(
     command_id: u32,
     id: u32,
-    params: command::Parameters,
+    params: Option<command::Parameters>,
 ) -> serde_json::Result<Message> {
     let command = Command {
         command_id,
@@ -55,40 +55,24 @@ fn construct_binary_message(
 }
 
 pub fn login(id: u32, user_id: String, password: String) -> crate::Result<Message> {
-    let params = command::Parameters::Login(command::LoginParameters { user_id, password });
-    Ok(construct_binary_message(301, id, params)?)
+    let params = command::Parameters::Login { user_id, password };
+    Ok(construct_binary_message(301, id, Some(params))?)
 }
 
 pub fn logout(id: u32) -> crate::Result<Message> {
-    Ok(construct_binary_message(
-        319,
-        id,
-        command::Parameters::None,
-    )?)
+    Ok(construct_binary_message(319, id, None)?)
 }
 
 pub fn clear_faults(id: u32) -> crate::Result<Message> {
-    Ok(construct_binary_message(
-        254,
-        id,
-        command::Parameters::None,
-    )?)
+    Ok(construct_binary_message(254, id, None)?)
 }
 
 pub fn start_test(id: u32) -> crate::Result<Message> {
-    Ok(construct_binary_message(
-        601,
-        id,
-        command::Parameters::None,
-    )?)
+    Ok(construct_binary_message(601, id, None)?)
 }
 
 pub fn pet_watchdog(id: u32) -> crate::Result<Message> {
-    Ok(construct_binary_message(
-        244,
-        id,
-        command::Parameters::None,
-    )?)
+    Ok(construct_binary_message(244, id, None)?)
 }
 
 pub fn on_connect_response() -> crate::Result<Message> {

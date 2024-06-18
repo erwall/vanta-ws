@@ -3,24 +3,16 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]
-pub struct LoginParameters {
-    #[serde(rename = "userId")]
-    pub user_id: String,
-    pub password: String,
-}
-
-#[derive(Serialize, Deserialize, Debug, Default)]
+#[serde(untagged, rename_all_fields = "camelCase")]
 pub enum Parameters {
-    #[default]
-    None,
-    Login(LoginParameters),
+    Login { user_id: String, password: String },
 }
 
 #[derive(Serialize, Deserialize, Debug)]
+#[serde(rename_all = "camelCase")]
 pub struct Command {
-    #[serde(rename = "commandId")]
     pub command_id: u32,
     pub id: u32,
-    #[serde(default, flatten)]
-    pub params: Parameters,
+    #[serde(default)]
+    pub params: Option<Parameters>,
 }
