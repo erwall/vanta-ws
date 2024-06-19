@@ -1,8 +1,18 @@
 //! Functions for a client communicating with Vanta WebSocket server
 
-use crate::message;
+use crate::message::{self, MessageInbound};
 use std::io::{Read, Write};
-use tungstenite::WebSocket;
+use tungstenite::{Message, WebSocket};
+
+pub fn read<S: Read + Write>(
+    socket: &mut WebSocket<S>,
+) -> crate::Result<Option<MessageInbound>> {
+    let message = match socket.read()? {
+        Message::Binary(m) => Some(message::deconstruct_binary_message(m.as_slice())?),
+        _ => None,
+    };
+    Ok(message)
+}
 
 pub fn login<S: Read + Write>(
     socket: &mut WebSocket<S>,

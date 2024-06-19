@@ -1,4 +1,5 @@
 use crate::command::{self, Command};
+use serde::{Deserialize, Serialize};
 use tungstenite::Message;
 
 const CONNECTION_ESTABLISHED: &str = "Server ready to receive commands";
@@ -37,6 +38,31 @@ impl From<&Message> for VantaState {
             Message::Text(s) => VantaState::from(s),
             _ => VantaState::Unknown,
         }
+    }
+}
+
+#[derive(Debug)]
+pub enum MessageInbound {
+    Response(crate::Response),
+    Notification(crate::Notification),
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+#[serde(rename_all = "camelCase")]
+struct MessageBase {
+    pub command_id: u32,
+    pub id: u32,
+}
+
+pub(crate) fn deconstruct_binary_message(message: &[u8]) -> serde_json::Result<MessageInbound> {
+    let m: MessageBase = serde_json::from_slice(message)?;
+    match m.command_id {
+        403 => Ok(MessageInbound::Notification(serde_json::from_slice::<
+            crate::Notification,
+        >(message)?)),
+        _ => Ok(MessageInbound::Response(serde_json::from_slice::<
+            crate::Response,
+        >(message)?)),
     }
 }
 
